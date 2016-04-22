@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PerformanceLab</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="backgrounds_title">Backgrounds</string>
+    <string name="line1_text">Line 1 TEXT</string>
+    <string name="line2_text">Line 2 text</string>
+    <string name="traceview_toast">Show walkthrough in device monitor</string>
+    <string name="battery_historian_toast">Show how to use historian</string>
+    <string name="churn_toast">use traceview to locate churn</string>
+    <string name="scheduler_btn_label">init download</string>
+</resources>
