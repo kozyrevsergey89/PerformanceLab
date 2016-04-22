@@ -23,15 +23,6 @@ public class MemoryLeakActivity extends AppCompatActivity {
         View view = findViewById(R.id.memory_view);
     }
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-        // By clearing out the set of listeners when the Activity stops, we can avoid excessive
-        // memory leaks. When the Activity is re-started, the custom view will be created and
-        // will then create its own listener again.
-//        ListenerCollector.clearListeners();
-//    }
-
     static class ListenerCollector {
         // A common case is to want to store all the listeners for a particular type of view
         // somewhere.  Harmless AND convenient.  Or... is it? o_0
@@ -40,10 +31,6 @@ public class MemoryLeakActivity extends AppCompatActivity {
         public void setListener(View view, MyCustomView.MyListener listener) {
             sListeners.put(view, listener);
         }
-
-//        public static void clearListeners() {
-//            sListeners.clear();
-//        }
     }
 
 }

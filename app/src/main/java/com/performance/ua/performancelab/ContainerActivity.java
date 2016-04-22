@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -31,7 +29,6 @@ public class ContainerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dumpPopularRandomNumbersByRank();
-//                dumpPopularRandomNumbersByRankMap();
             }
         });
 
@@ -63,33 +60,7 @@ public class ContainerActivity extends AppCompatActivity {
         Trace.endSection();
     }
 
-    /**
-     * Using the pre-formed array of random numbers ordered by popularity, prints out an ordered
-     * list of the random number + rank in the form "(RandomNumber): #(Rank)". By sorting the
-     * keyset, we can easily sort the numbers and retrieve their rank without needing to maintain
-     * two redundant data structures.
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public void dumpPopularRandomNumbersByRankMap() {
-        Trace.beginSection("Data structures");
-        // Make a copy so that we don't accidentally shatter our data structure.
-        Map<Integer, Integer> rankedNumbers = new HashMap<>();
-        rankedNumbers.putAll(coolestRandomNumbersMap);
-        // Then, we need a sorted version of the numbers to iterate through.
-        Integer[] sortedNumbers = {};
-        sortedNumbers = rankedNumbers.keySet().toArray(sortedNumbers);
-        Arrays.sort(sortedNumbers);
-
-        Integer number;
-        for (int i = 0; i < sortedNumbers.length; i++) {
-            number = sortedNumbers[i];
-            Log.i("Popularity Dump", number + ": #" + rankedNumbers.get(number));
-        }
-        Trace.endSection();
-    }
-
     public static Integer[] coolestRandomNumbers = new Integer[3000];
-    public static HashMap<Integer, Integer> coolestRandomNumbersMap = new HashMap<>();
     static int temp;
 
     static {
@@ -97,7 +68,6 @@ public class ContainerActivity extends AppCompatActivity {
         for (int i = 0; i < 3000; i++) {
             temp = randomGenerator.nextInt();
             coolestRandomNumbers[i] = temp;
-            coolestRandomNumbersMap.put(temp, i);
         }
     }
 }
