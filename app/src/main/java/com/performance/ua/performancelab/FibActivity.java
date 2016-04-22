@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 /**
@@ -42,6 +43,11 @@ public class FibActivity extends AppCompatActivity {
             }
         });
 
+
+        WebView webView = (WebView) findViewById(R.id.anim_view);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.loadUrl("file:///android_asset/androidify.gif");
     }
 
     public int computeFibonacci(int positionInFibSequence) {

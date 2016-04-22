@@ -3,6 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/anim_view"/>
+
     <ProgressBar
         android:layout_width="50dp"
         android:layout_height="50dp"

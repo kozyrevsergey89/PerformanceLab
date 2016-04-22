@@ -13,8 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 /**
@@ -53,6 +53,11 @@ public class SchedulerActivity extends AppCompatActivity {
 //                downloadSmarter();// or any other type of download
             }
         });
+
+        WebView webView = (WebView) findViewById(R.id.anim_view);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.loadUrl("file:///android_asset/androidify.gif");
     }
 
 
@@ -91,13 +96,13 @@ public class SchedulerActivity extends AppCompatActivity {
     /**
      * These are placeholder methods for where your app might do something interesting! Try not to
      * confuse them with functional code.
-     *
+     * <p/>
      * In this case, we are showing how your app might want to poll your server for an update that
      * isn't time-sensitive. Perhaps you have new data every day, or regularly scheduled content
      * updates that are not user-initiated. To perform these updates, you might use a wakelock in
      * a background service to fetch the content when the user is not currently using the phone.
      * These data fetches can benefit from batching.
-     *
+     * <p/>
      * In this sample, we are going to demonstrate how to "poll" a server using a wakelock. For
      * brevity, in this sample, we are simplifying the situation by running the same task several
      * times in quick succession. However, in your app, try to think of similar tasks you run
@@ -106,7 +111,7 @@ public class SchedulerActivity extends AppCompatActivity {
      */
     private void pollServer() {
         mWakeLockMsg.append("Polling the server! This day sure went by fast.");
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             mWakeLock.acquire();
             mWakeLockMsg.append("Connection attempt, take " + i + ":\n");
             mWakeLockMsg.append("WakeLock acquired!");
@@ -139,21 +144,21 @@ public class SchedulerActivity extends AppCompatActivity {
      * your app can be confident it will execute, but without the need for a wake lock. Rather, the
      * API will take your network jobs and execute them in batch to best take advantage of the
      * initial network connection cost.
-     *
+     * <p/>
      * The JobScheduler API works through a background service. In this sample, we have
      * a simple service in MyJobService to get you started. The job is scheduled here in
      * the activity, but the job itself is executed in MyJobService in the startJob() method. For
      * example, to poll your server, you would create the network connection, send your GET
      * request, and then process the response all in MyJobService. This allows the JobScheduler API
      * to invoke your logic without needed to restart your activity.
-     *
+     * <p/>
      * For brevity in the sample, we are scheduling the same job several times in quick succession,
      * but again, try to consider similar tasks occurring over time in your application that can
      * afford to wait and may benefit from batching.
      */
     public void pollServerJob() {
         JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             JobInfo jobInfo = new JobInfo.Builder(i, mServiceComponent)
                     .setMinimumLatency(5000) // 5 seconds
                     .setOverrideDeadline(60000) // 60 seconds (for brevity in the sample)
@@ -177,7 +182,7 @@ public class SchedulerActivity extends AppCompatActivity {
         JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         // Beginning with 10 here to distinguish this activity's jobs from the
         // FreeTheWakelockActivity's jobs within the JobScheduler API.
-        for (int i=10; i<20; i++) {
+        for (int i = 10; i < 20; i++) {
             JobInfo jobInfo = new JobInfo.Builder(i, mServiceComponent)
                     .setMinimumLatency(5000) // 5 seconds
                     .setOverrideDeadline(60000) // 60 seconds (for brevity in the sample)
