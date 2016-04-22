@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <WebView
+        android:id="@+id/anim_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/scheduler_btn"
         android:layout_width="match_parent"

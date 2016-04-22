@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 /**
@@ -40,6 +41,11 @@ public class SchedulerActivity extends AppCompatActivity {
                 pollServer();
             }
         });
+
+        WebView webView = (WebView) findViewById(R.id.anim_view);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.loadUrl("file:///android_asset/androidify.gif");
     }
 
     /**

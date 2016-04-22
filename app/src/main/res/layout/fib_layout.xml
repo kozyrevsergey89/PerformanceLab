@@ -4,18 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <WebView
+        android:id="@+id/anim_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ProgressBar
+        android:id="@+id/fib_progress"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:indeterminate="true"
-        android:id="@+id/fib_progress"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:indeterminate="true" />
 
     <TextView
+        android:id="@+id/fib_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fib_text"/>
-
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -28,6 +29,10 @@ public class MemoryChurnActivity extends AppCompatActivity {
                 imPrettySureSortingIsFree();
             }
         });
+        WebView webView = (WebView) findViewById(R.id.anim_view);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.loadUrl("file:///android_asset/androidify.gif");
     }
 
     /**
@@ -38,20 +43,20 @@ public class MemoryChurnActivity extends AppCompatActivity {
         int dimension = 300;
         int[][] lotsOfInts = new int[dimension][dimension];
         Random randomGenerator = new Random();
-        for(int i = 0; i < lotsOfInts.length; i++) {
+        for (int i = 0; i < lotsOfInts.length; i++) {
             for (int j = 0; j < lotsOfInts[i].length; j++) {
                 lotsOfInts[i][j] = randomGenerator.nextInt();
             }
         }
 
         // Now go through and dump the sorted version of each row to output!
-        for(int i = 0; i < lotsOfInts.length; i++) {
+        for (int i = 0; i < lotsOfInts.length; i++) {
             String rowAsStr = "";
             for (int j = 0; j < lotsOfInts[i].length; j++) {
                 // Clearly, the only reasonable way to construct a string is one character at a
                 // time, with lots and lots of convenient concatenation.
                 rowAsStr += getSorted(lotsOfInts[i])[j];
-                if(j < (lotsOfInts[i].length - 1)){
+                if (j < (lotsOfInts[i].length - 1)) {
                     rowAsStr += ", ";
                 }
             }
@@ -61,6 +66,7 @@ public class MemoryChurnActivity extends AppCompatActivity {
 
     /**
      * Helper method, returns the sorted copy of an array.
+     *
      * @param input the unsorted array
      * @return the sorted array
      */
