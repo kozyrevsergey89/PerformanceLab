@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -45,33 +47,21 @@ public class ContainerActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void dumpPopularRandomNumbersByRank() {
         Trace.beginSection("Data Structures");
-        // First we need a sorted list of the numbers to iterate through.
-        Integer[] sortedNumbers = coolestRandomNumbers.clone();
-        Arrays.sort(sortedNumbers);
+        ArrayList<Integer> sortedNumbers = new ArrayList<>(coolestRandomNumbers);
+        Collections.sort(sortedNumbers);
 
-        // Great!  Now because we have no rank lookup in the population-sorted array,
-        // take the random number in sorted order, and find its index in the array
-        // that's sorted by popularity.  The index is the rank, so report that.  Easy and efficient!
-        // Except that it's... you know... It's not.
-        for (int i = 0; i < sortedNumbers.length; i++) {
-            Integer currentNumber = sortedNumbers[i];
-            for (int j = 0; j < coolestRandomNumbers.length; j++) {
-                if (currentNumber.compareTo(coolestRandomNumbers[j]) == 0) {
-                    Log.i("Popularity Dump", currentNumber + ": #" + j);
-                }
-            }
+        for (Integer value : sortedNumbers) {
+            Log.i("Popularity Dump", value + ": #" + coolestRandomNumbers.indexOf(value));
         }
         Trace.endSection();
     }
 
-    public static Integer[] coolestRandomNumbers = new Integer[3000];
-    static int temp;
+    public static List<Integer> coolestRandomNumbers = new ArrayList<>();
 
     static {
         Random randomGenerator = new Random();
         for (int i = 0; i < 3000; i++) {
-            temp = randomGenerator.nextInt();
-            coolestRandomNumbers[i] = temp;
+            coolestRandomNumbers.add(randomGenerator.nextInt());
         }
     }
 }
