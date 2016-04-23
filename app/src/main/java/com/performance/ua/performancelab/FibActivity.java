@@ -2,6 +2,7 @@ package com.performance.ua.performancelab;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,6 +23,8 @@ public class FibActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, FibActivity.class));
     }
 
+    private AsyncTask<?, ?, ?> mTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +33,7 @@ public class FibActivity extends AppCompatActivity {
         findViewById(R.id.fib_progress).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.setText(String.valueOf(computeFibonacci(POSITION_IN_FIB_SEQUENCE)));
+                mTask = new MyTask().execute();
             }
         });
         WebView webView = (WebView) findViewById(R.id.anim_view);
@@ -49,4 +52,27 @@ public class FibActivity extends AppCompatActivity {
         }
     }
 
+
+    class MyTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return String.valueOf(computeFibonacci(POSITION_IN_FIB_SEQUENCE));
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            textView.setText(s);
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTask != null &&
+                mTask.getStatus() == AsyncTask.Status.RUNNING)
+            mTask.cancel(true);
+    }
 }
