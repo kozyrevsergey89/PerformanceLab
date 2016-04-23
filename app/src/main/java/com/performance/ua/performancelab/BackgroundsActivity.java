@@ -21,7 +21,9 @@ public class BackgroundsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.backgrounds_layout);
         ListView lv = (ListView) findViewById(R.id.backgrounds_list);
-        lv.setAdapter(new BackgroundListAdapter(this, 0, Arrays.asList(new String[]{"title1", "title2", "title3"})));
+        if (lv != null) {
+            lv.setAdapter(new BackgroundListAdapter(this, 0, Arrays.asList("title1", "title2", "title3")));
+        }
 
     }
 }
