@@ -84,13 +84,13 @@ public class SchedulerActivity extends AppCompatActivity {
             // Always check that the network is available before trying to connect. You don't want
             // to break things and embarrass yourself.
             if (isNetworkConnected()) {
-//                new SimpleDownloadTask().execute();
-                try {
-                    wait(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                releaseWakeLock();
+                //new SimpleDownloadTask().execute();
+                mWakeLockMsg.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        releaseWakeLock();
+                    }
+                }, 3000);
             } else {
                 mWakeLockMsg.append("No connection on job " + i + "; SAD FACE");
             }
