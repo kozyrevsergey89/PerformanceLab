@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -40,7 +39,7 @@ public class FibActivity extends AppCompatActivity {
     }
 
     public int computeFibonacci(int positionInFibSequence) {
-        Log.i(TAG, "inside fib" + positionInFibSequence);
+        //Log.i(TAG, "inside fib" + positionInFibSequence);
         if (positionInFibSequence <= 2) {
             return 1;
         } else {
