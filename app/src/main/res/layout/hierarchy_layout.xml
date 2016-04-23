@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/line2_text"
-        android:layout_toEndtOf="@+id/chat_author_avatar1"
+        android:layout_toEndOf="@+id/chat_author_avatar1"
         android:layout_below="@+id/awesome_text"
         />
 
