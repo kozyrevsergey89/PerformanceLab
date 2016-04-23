@@ -25,6 +25,7 @@ public class CanvasApiView extends View {
 
     private final int N = 4;
     private final int shift = 50;
+    private int cardLeft;
     private Paint myPaint = new Paint();
     private final int MARGIN = 100;
     private final int SIZE = MARGIN + 400;
@@ -33,10 +34,13 @@ public class CanvasApiView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (int i = 0; i < N; i++) {
-            // Each card is laid out a little to the right of the previous one.
+            canvas.save();
             myPaint.setColor(Color.RED / (i + 1));
             myPaint.setStrokeWidth(10);
+            cardLeft = MARGIN + i * shift;
+            if (i != N - 1) canvas.clipRect(cardLeft, MARGIN, cardLeft + shift, SIZE);
             canvas.drawRect(MARGIN + i * shift, MARGIN, SIZE + i * shift, SIZE, myPaint);
+            canvas.restore();
         }
         // Invalidate the whole view. Doing this calls onDraw() if the view is visible.
         invalidate();
