@@ -3,15 +3,18 @@ package com.performance.ua.performancelab;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Trace;
 import android.support.v7.app.AppCompatActivity;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -29,7 +32,7 @@ public class ContainerActivity extends AppCompatActivity {
         findViewById(R.id.container_progress).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dumpPopularRandomNumbersByRank();
+               mTask = new MyTask().execute();
             }
         });
         WebView webView = (WebView) findViewById(R.id.anim_view);
@@ -64,6 +67,33 @@ public class ContainerActivity extends AppCompatActivity {
         Trace.endSection();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void dumpPopularRandomNumbersByRankOptimised() {
+        Trace.beginSection("Data Structures");
+        // First we need a sorted list of the numbers to iterate through.
+        ArrayMap<Integer, Integer> sortedNumbers = new ArrayMap<>();
+        sortedNumbers.putAll(coolestRandomNumbersMap);
+        coolestRandomNumbers.clone();
+        Integer[] sorted = {};
+        sorted = sortedNumbers.keySet().toArray(sorted);
+        Arrays.sort(sorted);
+
+        // Great!  Now because we have no rank lookup in the population-sorted array,
+        // take the random number in sorted order, and find its index in the array
+        // that's sorted by popularity.  The index is the rank, so report that.  Easy and efficient!
+        // Except that it's... you know... It's not.
+        for (int i = 0; i < sorted.length; i++) {
+            Integer currentNumber = sorted[i];
+            for (int j = 0; j < coolestRandomNumbers.length; j++) {
+                if (currentNumber.compareTo(coolestRandomNumbers[j]) == 0) {
+                    Log.i("Popularity Dump", currentNumber + ": #" + j);
+                }
+            }
+        }
+        Trace.endSection();
+    }
+
+    public static HashMap<Integer, Integer> coolestRandomNumbersMap = new HashMap<>();
     public static Integer[] coolestRandomNumbers = new Integer[3000];
     static int temp;
 
@@ -72,6 +102,28 @@ public class ContainerActivity extends AppCompatActivity {
         for (int i = 0; i < 3000; i++) {
             temp = randomGenerator.nextInt();
             coolestRandomNumbers[i] = temp;
+            coolestRandomNumbersMap.put(temp, i);
         }
+    }
+
+    private AsyncTask<?, ?, ?> mTask;
+
+
+    class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            dumpPopularRandomNumbersByRankOptimised();
+            return null;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTask != null &&
+                mTask.getStatus() == AsyncTask.Status.RUNNING)
+            mTask.cancel(true);
     }
 }
