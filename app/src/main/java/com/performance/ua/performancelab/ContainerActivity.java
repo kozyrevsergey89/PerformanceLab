@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -21,6 +23,8 @@ public class ContainerActivity extends AppCompatActivity {
     public static void start(Context context) {
         context.startActivity(new Intent(context, ContainerActivity.class));
     }
+
+    static HashMap<Integer, ArrayList<Integer>> hashMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +57,20 @@ public class ContainerActivity extends AppCompatActivity {
         // take the random number in sorted order, and find its index in the array
         // that's sorted by popularity.  The index is the rank, so report that.  Easy and efficient!
         // Except that it's... you know... It's not.
-        for (int i = 0; i < sortedNumbers.length; i++) {
-            Integer currentNumber = sortedNumbers[i];
-            for (int j = 0; j < coolestRandomNumbers.length; j++) {
-                if (currentNumber.compareTo(coolestRandomNumbers[j]) == 0) {
-                    Log.i("Popularity Dump", currentNumber + ": #" + j);
+        for (int i = 0; i < coolestRandomNumbers.length; i++) {
+            if(hashMap.containsKey(coolestRandomNumbers[i])) {
+                hashMap.get(coolestRandomNumbers[i]).add(i);
+            } else {
+                ArrayList<Integer> temp = new ArrayList<>();
+                temp.add(i);
+                hashMap.put(coolestRandomNumbers[i], temp);
+            }
+        }
+        for (Integer sortNumber : sortedNumbers) {
+            if(hashMap.containsKey(sortNumber)) {
+                ArrayList<Integer> indexes = hashMap.get(sortNumber);
+                for (Integer index:indexes) {
+                    Log.i("Popularity Dump", sortNumber + ": #" + index);
                 }
             }
         }
@@ -65,13 +78,11 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     public static Integer[] coolestRandomNumbers = new Integer[3000];
-    static int temp;
 
     static {
         Random randomGenerator = new Random();
         for (int i = 0; i < 3000; i++) {
-            temp = randomGenerator.nextInt();
-            coolestRandomNumbers[i] = temp;
+            coolestRandomNumbers[i] = randomGenerator.nextInt();
         }
     }
 }
