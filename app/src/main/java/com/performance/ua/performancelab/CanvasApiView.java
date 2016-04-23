@@ -11,6 +11,7 @@ import android.view.View;
  * Created by sergey on 4/22/16.
  */
 public class CanvasApiView extends View {
+
     public CanvasApiView(Context context) {
         super(context);
     }
@@ -23,23 +24,42 @@ public class CanvasApiView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    private final int N = 4;
-    private final int shift = 50;
+
     private Paint myPaint = new Paint();
     private final int MARGIN = 100;
     private final int SIZE = MARGIN + 400;
+    private static final int STROKE_WIDTH = 10;
+
+    private final int N = 4;
+    private final int shift = 50;
+    private int leftMargin;
+
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (int i = 0; i < N; i++) {
-            // Each card is laid out a little to the right of the previous one.
-            myPaint.setColor(Color.RED / (i + 1));
-            myPaint.setStrokeWidth(10);
-            canvas.drawRect(MARGIN + i * shift, MARGIN, SIZE + i * shift, SIZE, myPaint);
-        }
+        alternative(canvas);
         // Invalidate the whole view. Doing this calls onDraw() if the view is visible.
         invalidate();
     }
+
+    private void alternative(Canvas canvas) {
+        for (int i = 0; i < N; i++) {
+            canvas.save();
+
+            myPaint.setColor(Color.RED / (i + 1));
+            myPaint.setStrokeWidth(STROKE_WIDTH);
+
+            leftMargin = MARGIN + i * shift;
+
+            if (i != N - 1) {
+                canvas.clipRect(leftMargin, MARGIN, leftMargin + shift, SIZE);
+            }
+
+            canvas.drawRect(MARGIN + i * shift, MARGIN, SIZE + i * shift, SIZE, myPaint);
+            canvas.restore();
+        }
+    }
+
 
 }
