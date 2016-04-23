@@ -17,8 +17,7 @@ public class MyCustomView extends View {
      * Internal initialization procedures for this view, regardless of which constructor was called.
      */
     private void init() {
-        MemoryLeakActivity.ListenerCollector collector = new MemoryLeakActivity.ListenerCollector();
-        collector.setListener(this, mListener);
+        ListenerCollector.setListener(this, mListener);
     }
 
     public MyCustomView(Context context) {
@@ -42,4 +41,10 @@ public class MyCustomView extends View {
             System.out.println("Someone called me!");
         }
     };
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ListenerCollector.removeListeners(this);
+    }
 }
