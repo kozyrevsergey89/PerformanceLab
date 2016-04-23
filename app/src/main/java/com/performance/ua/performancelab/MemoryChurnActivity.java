@@ -49,18 +49,17 @@ public class MemoryChurnActivity extends AppCompatActivity {
             }
         }
 
-        // Now go through and dump the sorted version of each row to output!
         for (int i = 0; i < lotsOfInts.length; i++) {
-            String rowAsStr = "";
+            StringBuilder sb = new StringBuilder();
             for (int j = 0; j < lotsOfInts[i].length; j++) {
                 // Clearly, the only reasonable way to construct a string is one character at a
                 // time, with lots and lots of convenient concatenation.
-                rowAsStr += getSorted(lotsOfInts[i])[j];
+                sb.append(getSorted(lotsOfInts[i])[j]);
                 if (j < (lotsOfInts[i].length - 1)) {
-                    rowAsStr += ", ";
+                    sb.append(", ");
                 }
             }
-            Log.i("MemoryChurnActivity", "Row " + i + ": " + rowAsStr);
+            Log.i("MemoryChurnActivity", "Row " + i + ": " + sb.toString());
         }
     }
 

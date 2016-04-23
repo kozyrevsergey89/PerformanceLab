@@ -31,6 +31,17 @@ public class MemoryLeakActivity extends AppCompatActivity {
         public void setListener(View view, MyCustomView.MyListener listener) {
             sListeners.put(view, listener);
         }
+
+        private static void clearListeners() {
+            sListeners.clear();
+        }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ListenerCollector.clearListeners();
+    }
+
 
 }
