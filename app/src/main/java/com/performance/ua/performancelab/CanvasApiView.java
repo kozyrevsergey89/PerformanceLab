@@ -33,10 +33,15 @@ public class CanvasApiView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (int i = 0; i < N; i++) {
+            canvas.save();
+            if (i != N - 1) {
+                canvas.clipRect(MARGIN + i * shift, MARGIN, MARGIN + i * shift + shift, SIZE);
+            }
             // Each card is laid out a little to the right of the previous one.
             myPaint.setColor(Color.RED / (i + 1));
             myPaint.setStrokeWidth(10);
             canvas.drawRect(MARGIN + i * shift, MARGIN, SIZE + i * shift, SIZE, myPaint);
+            canvas.restore();
         }
         // Invalidate the whole view. Doing this calls onDraw() if the view is visible.
         invalidate();
