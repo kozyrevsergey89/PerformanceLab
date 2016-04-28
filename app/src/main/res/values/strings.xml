@@ -12,4 +12,5 @@
     <string name="battery_historian_toast">Show how to use historian</string>
     <string name="churn_toast">use traceview to locate churn</string>
     <string name="scheduler_btn_label">init download</string>
+    <string name="test">test</string>
 </resources>
