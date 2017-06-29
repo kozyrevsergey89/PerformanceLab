@@ -16,6 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 
 /**
  * Created by sergey on 4/22/16.
@@ -26,6 +33,7 @@ public class SchedulerActivity extends AppCompatActivity {
     PowerManager mPowerManager;
     PowerManager.WakeLock mWakeLock;
     TextView mWakeLockMsg;
+    private FirebaseJobDispatcher firebaseJobDispatcher;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SchedulerActivity.class));
@@ -49,10 +57,16 @@ public class SchedulerActivity extends AppCompatActivity {
         findViewById(R.id.scheduler_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pollServer();
-//                downloadSmarter();// or any other type of download
+                //pollServer();
+                //downloadSmarter();// or any other type of download
+                fireBaseJobDispatcherDownload();
             }
         });
+
+        //EVEN BETTER
+        // Create a new dispatcher using the Google Play driver.
+        firebaseJobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+
 
         WebView webView = (WebView) findViewById(R.id.anim_view);
         webView.getSettings().setUseWideViewPort(true);
@@ -60,6 +74,34 @@ public class SchedulerActivity extends AppCompatActivity {
         webView.loadUrl("file:///android_asset/androidify.gif");
     }
 
+    private void fireBaseJobDispatcherDownload() {
+        Job myJob = firebaseJobDispatcher.newJobBuilder()
+            // the JobService that will be called
+            .setService(MyFJobService.class)
+            // uniquely identifies the job
+            .setTag("my-unique-tag")
+            // one-off job
+            .setRecurring(false)
+            // don't persist past a device reboot
+            .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+            // start between 0 and 60 seconds from now
+            .setTrigger(Trigger.executionWindow(0, 60))
+            // don't overwrite an existing job with the same tag
+            .setReplaceCurrent(false)
+            // retry with exponential backoff
+            .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+            // constraints that need to be satisfied for the job to run
+            .setConstraints(
+                // only run on an unmetered network
+                Constraint.ON_UNMETERED_NETWORK,
+                // only run when the device is charging
+                Constraint.DEVICE_CHARGING
+            )
+            //.setExtras(myExtrasBundle)
+            .build();
+
+        firebaseJobDispatcher.mustSchedule(myJob);
+    }
 
     /**
      * This method checks for power by comparing the current battery state against all possible
